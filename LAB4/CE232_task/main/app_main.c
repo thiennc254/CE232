@@ -72,8 +72,8 @@ char Msg[128];
 #define ADV_CONFIG_FLAG             (1 << 0)
 #define SCAN_RSP_CONFIG_FLAG        (1 << 1)
 
-#define MODE_BLE 0
-#define MODE_MQTT 1
+#define MODE_BLE 1
+#define MODE_MQTT 0
 int mode = MODE_BLE; /* 1 = lightblue 0 = flespi */
 
 
@@ -556,17 +556,15 @@ static void gatts_profile_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_
                         
                 }
                 
-                /* send response when param->write.need_rsp is true*/
                 if (param->write.need_rsp){
                     esp_ble_gatts_send_response(gatts_if, param->write.conn_id, param->write.trans_id, ESP_GATT_OK, NULL);
                 }
-            }else{
-                /* handle prepare write */
+            }else {
                 example_prepare_write_event_env(gatts_if, &prepare_write_env, param);
             }
       	    break;
         case ESP_GATTS_EXEC_WRITE_EVT: 
-            // the length of gattc prepare write data must be less than GATTS_EXAMPLE_CHAR_VAL_LEN_MAX. 
+     
             ESP_LOGI(EXAMPLE_TAG, "ESP_GATTS_EXEC_WRITE_EVT, Length=%d",  prepare_write_env.prepare_len);
             example_exec_write_event_env(&prepare_write_env, param);
             break;
@@ -644,11 +642,7 @@ static esp_err_t mqtt_event_handler_cb(esp_mqtt_event_handle_t event)
             ESP_LOGI(TAG, "MQTT_EVENT_CONNECTED");
             msg_id = esp_mqtt_client_subscribe(client, "sender", 0);
             ESP_LOGI(TAG, "sent subscribe successful, msg_id=%d", msg_id);
-            /*msg_id = esp_mqtt_client_subscribe(client, "/topic/qos1", 1);
-            ESP_LOGI(TAG, "sent subscribe successful, msg_id=%d", msg_id);
 
-            msg_id = esp_mqtt_client_unsubscribe(client, "/topic/qos1");
-            ESP_LOGI(TAG, "sent unsubscribe successful, msg_id=%d", msg_id);*/
             break;
         case MQTT_EVENT_DISCONNECTED:
             ESP_LOGI(TAG, "MQTT_EVENT_DISCONNECTED");
@@ -716,8 +710,7 @@ void app_main(void)
     {
         switch(mode)
         {
-            case MODE_BLE:
-            //MQTT
+            case MODE_MQTT:
                 ESP_LOGI(TAG, "[APP] Startup..");
                 ESP_LOGI(TAG, "[APP] Free memory: %d bytes", esp_get_free_heap_size());
                 ESP_LOGI(TAG, "[APP] IDF version: %s", esp_get_idf_version());
@@ -750,8 +743,7 @@ void app_main(void)
                 esp_mqtt_client_destroy(myclient);
                 esp_mqtt_client_disconnect(myclient);
                 break;
-        case MODE_MQTT:
-        //Bluetooh
+        case MODE_BLE:
             ret = nvs_flash_init();
             if (ret == ESP_ERR_NVS_NO_FREE_PAGES) {
                 ESP_ERROR_CHECK(nvs_flash_erase());
