@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.2/socket.io.min.js"></script>
+    <link rel="stylesheet" href="../static/style.css"/>
+</head>
+<body>
+    <!-- <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/data.js"></script> -->
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/map.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/data.js"></script>
+    <script type="text/javascript" src="../static/script.js"></script>
+    <div id="main">
+        <h1 id="header">
+            <ul id="date"></ul>
+        </h1>
+        <div id="body">
+            <div id="attribute">
+                <div id="sensor">
+                    <div id="content" class="haft-underline">GROUP 4</div>
+                    <div id="show-value">
+                        <ul id="temperature">
+                            <div id="temp-val" class="value"></div>
+                            <p id="character">°</p>
+                        </ul>
+                        <ul id="humidity">
+                            <div class="context">HUMIDITY</div>
+                            <div class="number">
+                                <div id="humi-val" class="value"></div>
+                                <p id="character">%</p>    
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+                <div id="chart">
+                    <canvas id="canvas"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
